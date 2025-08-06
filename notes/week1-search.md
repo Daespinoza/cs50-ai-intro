@@ -221,3 +221,26 @@ If BFS runs:
 
 ---
 
+## Code
+
+| **Cue (Main Idea)** | **Notes (Details and Explanation)** |
+|---------------------|--------------------------------------|
+| **Node Class** | Represents a state in the maze, keeping track of the state, its parent (previous state), and the action taken to reach it. Path cost isn't tracked as it's computed after finding the goal. |
+| **StackFrontier Class** | A stack-based data structure (LIFO) used to manage the frontier. Includes methods: `add`, `contains_state`, `empty`, and `remove`. |
+| **Classes in Python** | Object-oriented programming concept used to encapsulate data (frontier) and related methods. |
+| **Frontier Implementation** | Frontier starts as an empty list. Nodes are appended. The last item (`[-1]`) is removed during search, simulating a stack. |
+| **QueueFrontier Class** | Inherits from `StackFrontier`. Overrides `remove` to use FIFO (removes first item `[0]`) instead of LIFO. Used for BFS. |
+| **Maze Class** | Parses maze from a `.txt` file (walls = `#`, start = `A`, goal = `B`). Handles maze solving. |
+| **Solve Function** | Core search logic. Tracks explored states. Starts with a node for the start state. Uses a frontier (stack or queue depending on search algorithm). |
+| **Search Algorithm (DFS)** | Depth-First Search uses a stack. Explores deep paths first. May explore unnecessary paths and backtrack often. |
+| **Goal Test** | Checks if the current node's state matches the goal. If so, reconstructs path by backtracking via parent nodes and actions. |
+| **Backtracking** | Builds solution path and action list from goal to start, then reverses them to show path from start to goal. |
+| **Exploration** | If a node isn't the goal, it's added to the explored set. Neighbors are added to the frontier if not already explored or in the frontier. |
+| **Visualization** | Program generates a `.png` of the maze. Red = start, Green = goal, Yellow = path, Red cells (optional) = all explored states. |
+| **DFS on Complex Maze** | May explore hundreds of states (e.g., 399 for `maze2.txt`) and still find the optimal path, but inefficiently. |
+| **BFS on Complex Maze** | More efficient: explores fewer states (e.g., 77 for `maze2.txt`) and still finds the optimal solution. |
+| **DFS vs BFS** | Both may find the same solution, but BFS is more efficient in terms of states explored. DFS might find non-optimal solutions. |
+| **Maze3.txt Example** | BFS finds a 4-step optimal solution. DFS finds a longer path depending on exploration order. |
+| **Algorithm Trade-offs** | DFS can explore deeply and get stuck; BFS guarantees shortest path but may still explore many nodes if the goal is far. |
+| **Human Intuition** | A human might choose the direction that feels closer to the goal. Inspired the idea of a more intelligent algorithm. |
+| **Intelligent Search** | Suggests algorithms that consider direction or distance to the goal (e.g., heuristic-based like Greedy or A*). |

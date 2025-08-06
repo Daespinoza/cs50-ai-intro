@@ -88,18 +88,19 @@ class Maze():
         for i, row in enumerate(self.walls):
             for j, col in enumerate(row):
                 if col:
-                    print("â–ˆ", end="")
+                    print("\u2B1C", end="") #cuadrados blancos paredes
                 elif (i, j) == self.start:
-                    print("A", end="")
+                    print("\U0001F7E5", end="") #este es A
                 elif (i, j) == self.goal:
-                    print("B", end="")
+                    print("\U0001F7E9", end="") #este es B
                 elif solution is not None and (i, j) in solution:
-                    print("*", end="")
+                    print("\u2B1B", end="") #cuadrados negros camino
                 else:
-                    print(" ", end="")
+                    print("\U0001F7E8", end="")
             print()
         print()
-
+        # para cuadrados azules \U0001F7E6
+        # para cuadrados amarillos \U0001F7E8
 
     def neighbors(self, state):
         row, col = state
@@ -125,7 +126,8 @@ class Maze():
 
         # Initialize frontier to just the starting position
         start = Node(state=self.start, parent=None, action=None)
-        frontier = StackFrontier()
+        #frontier = StackFrontier() # For DFS use StackFrontier()
+        frontier = QueueFrontier() # For BFS use QueueFrontier()
         frontier.add(start)
 
         # Initialize an empty explored set
