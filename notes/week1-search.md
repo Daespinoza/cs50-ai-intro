@@ -244,3 +244,108 @@ If BFS runs:
 | **Algorithm Trade-offs** | DFS can explore deeply and get stuck; BFS guarantees shortest path but may still explore many nodes if the goal is far. |
 | **Human Intuition** | A human might choose the direction that feels closer to the goal. Inspired the idea of a more intelligent algorithm. |
 | **Intelligent Search** | Suggests algorithms that consider direction or distance to the goal (e.g., heuristic-based like Greedy or A*). |
+
+-----
+### Greedy Best-First Search
+
+| Key Question                          | Notes                                                                 |
+|--------------------------------------|-----------------------------------------------------------------------|
+| What is Greedy Best-First Search?    | A search algorithm that expands the node that appears to be closest to the goal using a heuristic. |
+| What is a heuristic?                 | A function that estimates the cost or distance from a node to the goal. |
+| How does GBFS choose nodes?          | It selects the node with the lowest heuristic value `h(n)`.            |
+| Is GBFS optimal?                     | No. It doesn’t guarantee the shortest path or least cost.             |
+| Is GBFS complete?                    | No. It might get stuck in loops or ignore the optimal path.           |
+| What is the main advantage?          | It's fast and uses less memory compared to algorithms like A*.         |
+| What is the main disadvantage?       | It can be misled by poor heuristics and may not find the best solution. |
+
+### GBFS Maze Example Walkthrough
+| Step | Action                                           | Explanation                                                      |
+|------|--------------------------------------------------|------------------------------------------------------------------|
+| 1    | Start at `A`                                     | Initial node                                                     |
+| 2    | Check neighbors: `B`, `E`, `F`                   | Expand nodes based on heuristic `h(n)`                           |
+| 3    | Choose node with lowest `h(n)` → `E`             | Greedy selects the most promising node                           |
+| 4    | Expand `E`: neighbor `C`                         | Continue expanding next best node                                |
+| 5    | Expand `C`: neighbor `D`                         | Moving closer to the goal `D`                                    |
+| 6    | Reached goal `D`                                 | Greedy Best-First Search terminates                              |
+
+### A* (A-Star) Search Algorithm
+| Key Question                                 | Notes                                                                                  |
+|---------------------------------------------|----------------------------------------------------------------------------------------|
+| What is A* Search?                           | A pathfinding algorithm that combines actual cost so far (g(n)) and estimated cost to goal (h(n)). |
+| What does A* minimize?                       | The total estimated cost `f(n) = g(n) + h(n)`.                                         |
+| What is g(n)?                                | The cost taken to reach the current node from the start node.                          |
+| What is h(n)?                                | The heuristic estimate of the cost from the current node to the goal.                  |
+| How does A* choose which node to expand?     | It selects the node with the lowest `f(n)` value.                                      |
+| Is A* optimal?                               | Yes, **if** the heuristic is **admissible** and **consistent**.                        |
+| What is an admissible heuristic?             | A heuristic that **never overestimates** the true cost to reach the goal.              |
+| What is a consistent heuristic?              | For every node `n` and successor `n'`, `h(n) ≤ h(n') + c`, where `c` is the step cost. |
+| What are the pros of A*?                     | It finds the **optimal solution** and is more informed than BFS or DFS.                |
+| What are the cons of A*?                     | It can use a lot of **memory**; performance depends heavily on the heuristic.          |
+| Why is choosing a heuristic important?       | A better heuristic leads to **faster** solutions with **less exploration**.            |
+
+## 📘 Cornell Notes – Minimax Algorithm (Theory)
+
+| Key Question | Notes |
+|--------------|-------|
+| What is adversarial search? | A search problem where an agent competes against an opponent with opposite goals. |
+| What is Minimax? | An algorithm for **two-player, deterministic, perfect-information games**. |
+| Who are the players? | **Max player (X)** tries to maximize score; **Min player (O)** tries to minimize score. |
+| How are outcomes represented? | Assign **utility values**: X wins → `+1`, O wins → `-1`, Draw → `0`. |
+| What is the role of utility? | Converts win/lose/draw into **numeric values** the AI can optimize. |
+| How does Minimax work? | Recursively explores all moves: <br> - Max picks the **highest** value. <br> - Min picks the **lowest** value. |
+| What are terminal states? | Game-over positions (win, loss, or draw). |
+| What functions are needed? | - **Initial state** S₀ (empty board) <br> - **Player(s)**: whose turn it is <br> - **Actions(s)**: legal moves <br> - **Result(s, a)**: new state after move <br> - **Terminal(s)**: checks if game is over <br> - **Utility(s)**: value of terminal states |
+| How does recursion work? | - **maxValue(s):** if terminal, return utility; else compute max over all minValue(results). <br> - **minValue(s):** if terminal, return utility; else compute min over all maxValue(results). |
+| What’s the key idea? | Each player assumes the opponent will also play **optimally**. |
+
+---
+
+## 🎮 Cornell Notes – Minimax Example (Tic-Tac-Toe)
+
+| Key Question | Notes |
+|--------------|-------|
+| What is the initial state? | Empty 3×3 board (S₀). |
+| What is the player function? | Given state **S**, returns whose turn it is (X first, then O). |
+| What is the actions function? | Returns all empty squares where a move can be placed. |
+| What is the result function? | Applies an action to a state, producing a new board configuration. |
+| What is the terminal test? | True if: <br> - X or O has 3 in a row, OR <br> - board is full (draw). |
+| What is the utility function? | X win = `+1`, O win = `-1`, Draw = `0`. |
+| How does decision-making look? | Example: <br> - X moves center. <br> - O blocks. <br> - X plays corner → sets up **two winning threats**. |
+| What does Minimax evaluate? | From each board state, considers: <br> - If Max (X), pick move leading to **highest utility**. <br> - If Min (O), pick move leading to **lowest utility**. |
+| How is recursion shown in Tic-Tac-Toe? | - O faces two options: move A → X wins (utility = 1), move B → Draw (utility = 0). <br> - O chooses move B (minimizing). |
+| What is the conclusion? | Minimax ensures **optimal play**: <br> - X maximizes outcome. <br> - O minimizes outcome. <br> - With perfect play, Tic-Tac-Toe always ends in a **draw**. |
+
+## 📘 Cornell Notes – Alpha-Beta Pruning
+
+| Key Question | Notes |
+|--------------|-------|
+| Why is Alpha-Beta Pruning needed? | Minimax can be very slow for complex games because it explores all possible states. Alpha-Beta Pruning optimizes the search by ignoring branches that cannot affect the final decision. |
+| What is the main idea? | Keep track of two values: **Alpha (best Max can guarantee so far)** and **Beta (best Min can guarantee so far)**. If a branch cannot improve the outcome, prune (ignore) it. |
+| How does it work? | While exploring nodes: <br> - If Max finds a move better than Beta → prune remaining siblings. <br> - If Min finds a move worse than Alpha → prune remaining siblings. |
+| What is pruning? | Cutting off parts of the game tree that cannot influence the final decision. This reduces computation. |
+| Example of pruning | If Max already found a move guaranteeing 4, and another branch can give at most 3, there is no need to explore further. That branch is pruned. |
+| Benefits of Alpha-Beta | Saves time by reducing the number of nodes explored compared to Minimax. Leads to faster decisions with the same result. |
+| What do Alpha and Beta represent? | - **Alpha (α):** The maximum score that Max can guarantee so far. <br> - **Beta (β):** The minimum score that Min can guarantee so far. |
+| Mathematical pruning condition | If **α ≥ β**, prune the remaining branches (they cannot influence the outcome). |
+| Does pruning affect correctness? | No, pruning does not change the result. It only eliminates unnecessary calculations. The chosen move remains the same as with Minimax. |
+| Complexity improvements | With good move ordering, Alpha-Beta can reduce the time complexity from **O(b^d)** (Minimax) to about **O(b^(d/2))**, where *b* = branching factor, *d* = depth. |
+| Tic-Tac-Toe vs Chess | - Tic-Tac-Toe: ~255,000 possible games. <br> - Chess: 288 billion possible games after just 4 moves each; ~10^29,000 total possible games. Shows why pruning is necessary. |
+| Limitations | Even with pruning, complex games like chess remain computationally huge. Further heuristics and optimizations are needed. |
+
+# Depth-Limited Minimax (Cornell Notes)
+
+| **Cues / Questions** | **Notes** |
+|-----------------------|-----------|
+| Why not use full Minimax? | Full Minimax searches the entire game tree until the game ends. In complex games (chess, checkers), this is computationally infeasible. |
+| What is Depth-Limited Minimax? | A variation of Minimax where the search is limited to a fixed depth (e.g., 10–12 moves). After that, no further states are explored. |
+| Problem at cutoff depth | At the cutoff depth, the game is often not over, so we need a way to evaluate the board. |
+| What solves this? | **Evaluation Function**: estimates the utility of a game state. |
+| Example (Chess) | - +1 = White wins <br> - -1 = Black wins <br> - 0 = Draw <br> - 0.8 = White is likely to win |
+| Role of Evaluation Function | The better the evaluation function, the better the AI plays. A poor function → weak AI performance. |
+| Possible heuristics (Chess) | - Material count (pieces & values) <br> - Positional considerations <br> - More advanced strategies needed for realism |
+| Variants of Minimax | Many exist, adding features to handle computational limits (e.g., pruning, heuristics). |
+| Where used? | - Adversarial search (games like Tic-Tac-Toe, Checkers, Chess) <br> - Any AI decision-making problem involving an opponent. |
+| Key Insight | Tic-Tac-Toe is simple enough for optimal play lookup. Larger games require intelligent search with evaluation functions. |
+
+**Summary:**  
+Depth-Limited Minimax avoids intractable searches by cutting off at a fixed depth. Evaluation functions then approximate the value of non-terminal states. The effectiveness of the AI depends heavily on the quality of these evaluation functions. This approach is fundamental in adversarial AI (games, decision-making against opponents).
